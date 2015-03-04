@@ -2,7 +2,6 @@
   "name": "grunt-stripmq",
   "title": "grunt-stripmq",
   "description": "A fork of: git://github.com/jtangelder/grunt-stripmq.git",
-  "version": "0.0.6",
   "licenses": [
     {
       "type": "MIT",
