@@ -9,7 +9,11 @@ function stripMediaQueries (ast, options) {
    ast.stylesheet.rules = ast.stylesheet.rules.reduce(function (rules, rule) {
         if (rule.type === 'media') {
             if (mediaQuery.match(rule.media, options)) {
-                rules.push.apply(rules, rule.rules);
+                if(options.preserveMatchingRules){
+                    rules.push(rule);
+                }else{
+                    rules.push.apply(rules, rule.rules);
+                }
             }
         }
         else {
@@ -36,7 +40,8 @@ function StripMQ(input, options) {
         resolution:      options.resolution || '1dppx',
         orientation:     options.orientation || 'landscape',
         'aspect-ratio':  options['aspect-ratio'] || options.width/options.height || 1024/768,
-        color:           options.color || 3
+        color:           options.color || 3,
+        preserveMatchingRules: options.preserveMatchingRules || false
     };
 
     var tree = parse(input);
