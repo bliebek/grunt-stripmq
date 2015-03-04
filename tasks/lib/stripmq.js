@@ -8,11 +8,29 @@ var parse = require('css-parse'),
 function stripMediaQueries (ast, options) {
    ast.stylesheet.rules = ast.stylesheet.rules.reduce(function (rules, rule) {
         if (rule.type === 'media') {
-            if (mediaQuery.match(rule.media, options)) {
-                if(options.preserveMatchingRules){
-                    rules.push(rule);
-                }else{
-                    rules.push.apply(rules, rule.rules);
+
+            if(typeof options['device-width'] === 'object'){
+                options['device-width'].some(function(width){
+                    options.width = width;
+                    if (mediaQuery.match(rule.media, options)) {
+                        if(options.preserveMatchingRules){
+                            rules.push(rule);
+                        }else{
+                            rules.push.apply(rules, rule.rules);
+                        }
+                        return true;
+                    }else{
+                        return false;
+                    }
+                });
+
+            }else{
+                if (mediaQuery.match(rule.media, options)) {
+                    if(options.preserveMatchingRules){
+                        rules.push(rule);
+                    }else{
+                        rules.push.apply(rules, rule.rules);
+                    }
                 }
             }
         }
